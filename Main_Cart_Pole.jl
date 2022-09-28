@@ -28,38 +28,37 @@ const u_ub = u_max;                     # upper bound of input
 ## define property of collocation method
 optimizer = Ipopt.Optimizer(); # NLP solver
 
-# collocation methods
-collocationMethod = "Trapezoidal";
+## collocation methods (selection one of them)
+# collocationMethod = "Trapezoidal";
 collocationMethod = "Hermite-Simpson";
 
-# continuity of inputs
-input_continuity = Continuous();
+## continuity of inputs (selection one of them)
+# input_continuity = Continuous();
 input_continuity = Discontinuous();
 
-# Minimum N is selected for probelm feasibility
-# TRP: Minimum numInterval = 4
-# HSS: Minimum numInterval = 3
+## Minimum N is selected for probelm feasibility
+## TRP: Minimum numInterval = 4
+## HSS: Minimum numInterval = 3
 numInterval = 4
 
 ## define property of meshRefinement method
-# target Mean Integrated Residual Norm Squared 
-resiThreshold = 1e-6;
+resiThreshold = 1e-6; # target Mean Integrated Residual Norm Squared 
 
-# initial start setting
-start = coldStart(); 
+## initial start setting (selection one of them)
+# start = coldStart(); 
+# start = onceWarmStart();
+# start = quasiWarmStart();
 start = warmStart(); 
-start = quasiWarmStart();
-start = onceWarmStart();
 
-# termination setting
+## termination setting (selection one of them)
 termination = lateTerm();
 termination = earlyTerm();
 
-# mesh refinement methods
-MRMethod = "MRBisectionOne";
+## mesh refinement methods (selection one of them)
 MRMethod = "MRMinimax";
-MRMethod = "MRBisectionMulti";
-MRMethod = "MREquidistributed";
+# MRMethod = "MRBisectionMulti";
+# MRMethod = "MREquidistributed";
+# MRMethod = "MRBisectionOne";
 # MRMethod = "MRBisectionAll";
 
 ## define collocation algorithm applied
@@ -67,27 +66,15 @@ alg = Collocation(optimizer, numInterval, input_continuity, collocationMethod)
 meshRefi = MeshRefi(resiThreshold, start, termination, MRMethod)
 
 ## solve
-@benchmark solveMeshRefi(alg, meshRefi)
-@time prob_alg = solveMeshRefi(alg, meshRefi);
-plotResults(prob_alg);
-# @time prob_alg = solveMeshRefi(prob, alg, meshRefi);
+prob_alg = solveMeshRefi(alg, meshRefi);
+plotResults(prob_alg); # plot results
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 10;
-BenchmarkTools.DEFAULT_PARAMETERS.seconds = 60;
-io = IOContext(stdout)
-medianTimeEarly2 = []
-b = @benchmark prob_alg = solveMeshRefi(alg, meshRefi); show(io, MIME("text/plain"), b); println("\n");
-medianTimeEarly2 = [medianTimeEarly2; median(b.times)];
+## test running time individually
+# BenchmarkTools.DEFAULT_PARAMETERS.samples = 10;
+# BenchmarkTools.DEFAULT_PARAMETERS.seconds = 60;
+# io = IOContext(stdout)
+# b = @benchmark prob_alg = solveMeshRefi(alg, meshRefi); show(io, MIME("text/plain"), b); println("\n");
 
-
-solnInit, algInit, soln, alg, meshRefi = prob_alg;
-plotSoln(solnInit, algInit, meshRefi)
-plotSoln(soln, alg, meshRefi)
-plotResults(prob_alg);
-
-solnInit, algInit, soln, alg, meshRefi = prob_alg;
-# soln, alg = prob_alg; plotResults(soln, alg);
-# plotResults(prob_alg);
 
 
 
