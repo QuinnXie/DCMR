@@ -1,7 +1,7 @@
 # DCMR
 Direct Collocation with Mesh Refinement Methods for Solving a dynamic optimization problem (DOP).
 As shown in the main function, *Main_Cart_Pole.jl*, we take [cart pole problem][2] as an simple example.
-Then, there are many inputs for collocation and meshrefi functions as properties setting of them. They could be selected manually before the arguments.
+Then, there are many inputs for collocation and meshrefi functions to set properties of them. They could be selected manually before the arguments.
 ```julia
 julia> alg = Collocation(optimizer, numInterval, input_continuity, collocationMethod);
 julia> meshRefi = MeshRefi(resiThreshold, start, termination, MRMethod);
