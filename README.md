@@ -8,7 +8,7 @@ julia> meshRefi = MeshRefi(resiThreshold, start, termination, MRMethod);
 ```
 After defining the methods, function *solveMeshRefi* is used to solve the DOP and initial and final solution would be stored in variable *prob_alg*. Finally, with function *plotResults*, all results could be plotted and shown in pictures.
 ```julia
-julia> alg = prob_alg = solveMeshRefi(alg, meshRefi);
+julia> prob_alg = solveMeshRefi(alg, meshRefi);
 julia> plotResults(prob_alg);
 ```
 The construction of DCMR package and discussion of results could be referred to *Kui_MSc_Thesis.pdf* in the files. Detailed description of these methods such as collocation and mesh refinement methods could be found in [Betts][1].
